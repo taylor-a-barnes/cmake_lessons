@@ -4,7 +4,6 @@
 int main() {
   YAML::Node books = YAML::LoadFile("data/books.yaml");
 
-
   for (const auto& pair : books["books"]) {
     const auto& book = pair.second;
 
