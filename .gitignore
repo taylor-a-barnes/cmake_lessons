@@ -35,6 +35,7 @@
 .code-server/code-server.log
 .interface.ps1
 .interface.sh
+bash.bat
 
 # CMake build directories
 /obj
