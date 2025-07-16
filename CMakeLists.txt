@@ -25,4 +25,3 @@ FetchContent_MakeAvailable(brotli)
 message(STATUS "brotli_SOURCE_DIR: ${brotli_SOURCE_DIR}")
 
 target_link_libraries(brotliexample PRIVATE brotlienc)
-target_include_directories(brotliexample PRIVATE ${brotli_SOURCE_DIR}/c/include})
