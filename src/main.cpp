@@ -1,6 +1,7 @@
 #include <iostream>
 #include <yaml-cpp/yaml.h>
 #include <brotli/encode.h>
+#include <zstd.h>
 #include <fstream>
 
 bool read_file(const std::string& filename, std::vector<uint8_t>& buffer) {
@@ -35,11 +36,16 @@ bool compress(const std::string& readname, const std::string& writename) {
   }
 
   // Set the initial size of the buffer for the compressed data
+#if false
   size_t max_compressed_size = BrotliEncoderMaxCompressedSize(uncompressed_data.size());
+#else
+  size_t max_compressed_size = ZSTD_compressBound(uncompressed_data.size());
+#endif
   compressed_data.resize(max_compressed_size);
   size_t encoded_size = max_compressed_size;
   std::cout << "Uncompressed size: " << uncompressed_data.size() << "\n";
 
+#if false
   // Use brotli to compress the data
   int quality = 11;
   int lgwin = 22;
@@ -51,6 +57,20 @@ bool compress(const std::string& readname, const std::string& writename) {
     &encoded_size, compressed_data.data()
   );
   if (!success) return false;
+#else
+  int compression_level = 3;
+  encoded_size = ZSTD_compress(
+    compressed_data.data(),
+    max_compressed_size,
+    uncompressed_data.data(),
+    uncompressed_data.size(),
+    compression_level
+  );
+  if (ZSTD_isError(encoded_size)) {
+    return false;
+  }
+#endif
+
 
   // Resize the output buffer and write it
   compressed_data.resize(encoded_size);

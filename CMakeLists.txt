@@ -35,3 +35,10 @@ FetchContent_MakeAvailable(brotli)
 
 message(STATUS "brotli_SOURCE_DIR: ${brotli_SOURCE_DIR}")
 target_link_libraries(brotliexample PRIVATE brotlienc)
+
+
+
+
+find_library(ZSTD_LIB zstd REQUIRED)
+message(STATUS "ZSTD_LIB: ${ZSTD_LIB}")
+target_link_libraries(brotliexample PRIVATE ${ZSTD_LIB})
