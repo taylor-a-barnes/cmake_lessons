@@ -83,6 +83,17 @@ install(TARGETS CmpWrapper
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
+# Install Brotli targets if Brotli is used
+if (CmpWrapper_COMPRESSION_LIBRARY STREQUAL "Brotli")
+  install(TARGETS brotlienc brotlidec brotlicommon
+          EXPORT CmpWrapperTargets
+          LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+          ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+          RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+          INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+  install(DIRECTORY ${brotli_SOURCE_DIR}/c/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+endif()
+
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 # Create the CMake configuration files
