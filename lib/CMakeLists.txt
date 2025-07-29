@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 4.0)
 
-set(CmpExample_COMPRESSION_LIBRARY "Brotli" CACHE STRING
+set(CmpWrapper_COMPRESSION_LIBRARY "Brotli" CACHE STRING
   "Indicate which compression method to use (Brotli or ZSTD)")
 
 # Project name and version
-project(CmpExample VERSION 1.0.0
+project(CmpWrapper VERSION 1.0.0
   LANGUAGES CXX)
 
 # Specify the C++ standard
@@ -43,21 +43,7 @@ target_include_directories(
 
 include(FetchContent)
 
-find_package(yaml-cpp)
-if ( yaml-cpp_FOUND )
-  target_link_libraries(CmpWrapper PRIVATE yaml-cpp)
-else()
-  FetchContent_Declare(
-    yaml-cpp
-    GIT_REPOSITORY https://github.com/jbeder/yaml-cpp.git
-    GIT_TAG        2f86d13775d119edbb69af52e5f566fd65c6953b
-  )
-  FetchContent_MakeAvailable(yaml-cpp)
-  target_link_libraries(cmpexample PRIVATE yaml-cpp)
-endif()
-
-
-if ( CmpExample_COMPRESSION_LIBRARY STREQUAL "Brotli" )
+if ( CmpWrapper_COMPRESSION_LIBRARY STREQUAL "Brotli" )
   FetchContent_Declare(
     brotli
     GIT_REPOSITORY https://github.com/google/brotli.git
@@ -67,14 +53,14 @@ if ( CmpExample_COMPRESSION_LIBRARY STREQUAL "Brotli" )
   message(STATUS "brotli_SOURCE_DIR: ${brotli_SOURCE_DIR}")
   target_link_libraries(CmpWrapper PRIVATE brotlienc)
   target_compile_definitions(CmpWrapper PUBLIC __use_brotli=1)
-elseif( CmpExample_COMPRESSION_LIBRARY STREQUAL "ZSTD" )
+elseif( CmpWrapper_COMPRESSION_LIBRARY STREQUAL "ZSTD" )
   find_library(ZSTD_LIB zstd REQUIRED)
   message(STATUS "ZSTD_LIB: ${ZSTD_LIB}")
   target_link_libraries(CmpWrapper PRIVATE ${ZSTD_LIB})
   target_compile_definitions(CmpWrapper PUBLIC __use_zstd=1)
 else()
-  message(FATAL_ERROR "Unsupported value of CmpExample_COMPRESSION_LIBRARY:
-    ${CmpExample_COMPRESSION_LIBRARY}")
+  message(FATAL_ERROR "Unsupported value of CmpWrapper_COMPRESSION_LIBRARY:
+    ${CmpWrapper_COMPRESSION_LIBRARY}")
 endif()
 
 if ( BUILD_SHARED_LIBS )
