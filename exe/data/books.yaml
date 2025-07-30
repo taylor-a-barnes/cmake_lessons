@@ -1,0 +1,10 @@
+books:
+  warandpeace:
+    name: "War and Peace"
+    pages: 614
+  beowulf:
+    name: "Beowulf"
+    pages: 370
+  ludinthemist:
+    name: "Lud-in-the-Mist"
+    pages: 328
